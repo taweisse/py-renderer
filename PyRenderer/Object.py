@@ -1,10 +1,9 @@
+import numpy
+
 class Object:
     def __init__(self):
         self.name = str()
         self.verticies = list()
-
-    def test(self):
-        print("working!")
 
     def loadModel(self, filename):
         file = open(filename, "r")
@@ -14,9 +13,11 @@ class Object:
                 continue
             elif line[0] == "o":
                 self.name = line.split()[1]
-                continue;
+                continue
             elif line[0] == "v":
-                self.verticies.append([float(i) for i in line.split()[1:]])
-                continue;
+                tmp = ([float(i) for i in line.split()[1:]])
+                tmp.append(1)
+                self.verticies.append(tmp)
+                continue
 
         file.close()
