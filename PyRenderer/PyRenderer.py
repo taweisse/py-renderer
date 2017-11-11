@@ -1,6 +1,8 @@
 import pygame
 import sys
 import math
+import numpy
+import operator
 from Object import Object
 
 pygame.init()
@@ -25,6 +27,8 @@ print(model.verticies)
 # Flag to tell if the user is clicking and dragging.
 # If they are, we need to rotate the model accordingly.
 mouseDrag = False;
+mousePrePos = (-1,-1)
+mouseCurPos = (-1,-1)
 
 while 1:
     dt = clock.tick()/1000
@@ -34,17 +38,30 @@ while 1:
             pygame.quit()
             sys.exit()
 
+        # Set the mouseDrag flag if the user clicks the mouse.
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 mouseDrag = True
             
+        # Unset the mouseDrag flag when the user lets the button up.
         if event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:
                 mouseDrag = False
+                mouseCurPos = (-1,-1)
+
+        # Record the location of the mouse if the user is dragging.
+        if (event.type == pygame.MOUSEMOTION and mouseDrag):
+            mousePrePos = mouseCurPos
+            mouseCurPos = event.pos
             
         print(event)
-        print(mouseDrag)
 
+    # Rotate the model based on the current and previous mouse coords.
+    if (mouseDrag and mousePrePos != (-1,-1)):
+        mouseMov = tuple(map(operator.sub, mouseCurPos, mousePrePos))
+        print(mouseMov)
+
+    # Fill the screen with white as a background.
     screen.fill((255,255,255))
 
     for x,y,z in model.verticies:
