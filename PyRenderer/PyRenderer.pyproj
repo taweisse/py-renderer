@@ -11,7 +11,7 @@
     <OutputPath>.</OutputPath>
     <Name>PyRenderer</Name>
     <RootNamespace>PyRenderer</RootNamespace>
-    <InterpreterId>Global|PythonCore|3.5-32</InterpreterId>
+    <InterpreterId>Global|PythonCore|3.5</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,14 +28,7 @@
     <Compile Include="PyRenderer.py" />
   </ItemGroup>
   <ItemGroup>
-    <InterpreterReference Include="Global|PythonCore|3.5-32" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Test Objects\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Test Objects\teapot.obj" />
-    <Content Include="Test Objects\teddy.obj" />
+    <InterpreterReference Include="Global|PythonCore|3.5" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
