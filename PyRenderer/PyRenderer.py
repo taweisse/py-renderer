@@ -24,6 +24,9 @@ model = Object()
 model.loadModel("teapot.obj")
 print(model.verticies)
 
+# Set up the world coords.
+worldPos = [0,0,0]
+
 # Flag to tell if the user is clicking and dragging.
 # If they are, we need to rotate the model accordingly.
 mouseOrbit = False
@@ -52,31 +55,59 @@ while 1:
                 mouseOrbit = False
             if event.button == 2:
                 mouseMove = False
-            
-        print(event)
 
     # Rotate the model based on the current and previous mouse coords.
     if mouseOrbit:
         # Determine how far the mouse moved since last frame.
         change = pygame.mouse.get_rel()
-        print(change)
+        sinX = math.sin(math.radians(change[0]))
+        cosX = math.cos(math.radians(change[0]))
+        
+        # Rotate each point based on mouse movement.
+        for i in range(0, len(model.verticies)):
+
+            # Move point to be relative to the origin.
+            xTmp = model.verticies[i][0] #- model.worldPos[0]
+            yTmp = model.verticies[i][2] #- model.worldPos[2]
+
+            # Rotate about y.
+            xNew = xTmp*cosX - yTmp*sinX
+            yNew = xTmp*sinX + yTmp*cosX
+
+            model.verticies[i][0] = xNew #+ model.worldPos[0]
+            model.verticies[i][2] = yNew #+ model.worldPos[2]
 
     if mouseMove:
         change = pygame.mouse.get_rel()
-        print(change)
 
         # Change the coords of each vertex in the list.
         for i in range(0,len(model.verticies)):
             model.verticies[i][0] -= change[0] * RenderSettings.moveSpeed
             model.verticies[i][1] -= change[1] * RenderSettings.moveSpeed
 
+            # Update model's world position.
+            model.worldPos[0] -= change[0] * RenderSettings.moveSpeed
+            model.worldPos[1] -= change[1] * RenderSettings.moveSpeed
+
     # Fill the screen with white as a background.
     screen.fill((255,255,255))
 
-    for x,y,z,ex in model.verticies:
-        z+=5
-        f = cy/z
-        x,y = x*f,y*f
-        pygame.draw.circle(screen, (0,0,0),(cx-int(x),cy-int(y)), 1)
+    #for x, y, z, ex in model.verticies:
+    #    z += 5
+    #    f = cy / z
+    #    x, y = x * f, y * f
+    #    pygame.draw.circle(screen, (0, 0, 0),(cx - int(x), cy - int(y)), 1)
+
+    for edge in model.edges:
+
+        points = list()
+
+        for x, y, z, ex in (model.verticies[edge[0]], model.verticies[edge[1]]):
+            z += 5
+            f = cy / z
+            x, y = x * f, y * f
+            points += [(cx - int(x), cy - int(y))]
+
+        pygame.draw.line(screen, (0, 0, 0), points[0], points[1], 1)
 
     pygame.display.update()
