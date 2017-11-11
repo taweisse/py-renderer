@@ -1,4 +1,5 @@
 import pygame
+import pyglet
 import sys
 import math
 import numpy
@@ -60,8 +61,8 @@ while 1:
     if mouseOrbit:
         # Determine how far the mouse moved since last frame.
         change = pygame.mouse.get_rel()
-        sinX = math.sin(math.radians(change[0]))
-        cosX = math.cos(math.radians(change[0]))
+        sinX = math.sin(math.radians(-change[0]))
+        cosX = math.cos(math.radians(-change[0]))
         
         # Rotate each point based on mouse movement.
         for i in range(0, len(model.verticies)):
