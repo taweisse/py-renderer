@@ -2,4 +2,4 @@
 
 moveSpeed = 0.01
 orbitSpeed = 0.01
-resolution = (600, 600)
+resolution = (800, 600)
